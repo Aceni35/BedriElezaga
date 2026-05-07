@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsx *)",
+      "Read(//private/tmp/**)",
+      "Bash(pkill -f \"src/index.ts\")"
+    ]
+  }
+}

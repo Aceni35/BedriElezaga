@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Shkolla Fillore "Bedri Elezaga"</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..600;1,9..144,400..500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          display: ['Fraunces', 'Georgia', 'serif'],
+          sans: ['Inter', 'system-ui', 'sans-serif'],
+          mono: ['JetBrains Mono', 'Menlo', 'monospace'],
+        },
+        colors: {
+          bg:        'var(--bg)',
+          surface:   'var(--surface)',
+          surface2:  'var(--surface-2)',
+          ink:       'var(--ink)',
+          'ink-soft':'var(--ink-soft)',
+          'ink-faint':'var(--ink-faint)',
+          primary:   'var(--primary)',
+          'primary-deep': 'var(--primary-deep)',
+          'primary-soft': 'var(--primary-soft)',
+          accent:    'var(--accent)',
+          'accent-soft':'var(--accent-soft)',
+          line:      'var(--line)',
+          'line-strong': 'var(--line-strong)',
+        },
+        boxShadow: {
+          sm: '0 1px 2px rgba(43,32,26,.04), 0 2px 8px rgba(43,32,26,.04)',
+          md: '0 4px 12px rgba(43,32,26,.06), 0 12px 32px rgba(43,32,26,.06)',
+          lg: '0 10px 24px rgba(43,32,26,.08), 0 24px 60px rgba(43,32,26,.10)',
+        },
+        borderRadius: { '4xl': '28px' },
+      }
+    }
+  }
+</script>
+
+<style>
+  :root {
+    --bg:#f5eee4; --surface:#faf6ef; --surface-2:#efe6d6;
+    --ink:#2b201a; --ink-soft:#6b5d52; --ink-faint:#a89b8f;
+    --primary:#7a2e2e; --primary-deep:#5c1f1f; --primary-soft:#e8d4d0;
+    --accent:#c89961; --accent-soft:#f0e2cc;
+    --line:#e5dac7; --line-strong:#d4c3a8;
+  }
+  [data-theme="forest"] {
+    --bg:#eef2ea; --surface:#f7f9f3; --surface-2:#e3ead9;
+    --ink:#1f2a1e; --ink-soft:#556153;
+    --primary:#2d4a3e; --primary-deep:#1d3328; --primary-soft:#d4e0d0;
+    --line:#dde4d3; --line-strong:#c1cdb3;
+  }
+  [data-theme="navy"] {
+    --bg:#edeef3; --surface:#f7f8fb; --surface-2:#dfe2eb;
+    --ink:#1a1f2e; --ink-soft:#566075;
+    --primary:#1a2942; --primary-deep:#0f1a2e; --primary-soft:#d3d9e4;
+    --line:#dadee8; --line-strong:#b8c0d0;
+  }
+  html, body { background: var(--bg); color: var(--ink); font-family: 'Inter', system-ui, sans-serif; scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+  h1, h2, h3, h4 { font-family: 'Fraunces', Georgia, serif; letter-spacing: -0.02em; line-height: 1.1; font-weight: 500; }
+
+  /* Placeholder image */
+  .ph {
+    position: relative;
+    background: var(--surface-2);
+    background-image: repeating-linear-gradient(135deg, transparent, transparent 14px, rgba(122,46,46,.06) 14px, rgba(122,46,46,.06) 15px);
+    overflow: hidden; display:flex; align-items:center; justify-content:center;
+  }
+  .ph-label {
+    font-family: 'JetBrains Mono', monospace; font-size:10px; letter-spacing:.08em; text-transform:uppercase;
+    color: var(--ink-soft); background: var(--surface); padding:6px 10px; border-radius:8px; border:1px solid var(--line); opacity:.9;
+  }
+
+  /* Nav glass */
+  .nav-glass { background: rgba(245,238,228,.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+  .nav-glass-scrolled { background: rgba(250,246,239,.92); border-bottom: 1px solid var(--line); }
+
+  /* Dropdown anim */
+  @keyframes dd-in { from {opacity:0; transform: translateY(-6px);} to {opacity:1; transform:translateY(0);} }
+  .dd-in { animation: dd-in .18s ease; }
+  @keyframes fade-in { from {opacity:0;} to {opacity:1;} }
+  .fade-in { animation: fade-in .2s ease; }
+  @keyframes modal-in { from {opacity:0; transform: translateY(16px) scale(.98);} to {opacity:1; transform: translateY(0) scale(1);} }
+  .modal-in { animation: modal-in .25s cubic-bezier(.2,.8,.2,1); }
+
+  /* Eyebrow pseudo-element */
+  .eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--primary); opacity: .6; display: inline-block; margin-right: 10px; vertical-align: middle; }
+
+  /* Timeline line */
+  .timeline-rail::before { content:''; position: absolute; left: 50%; top: 12px; bottom: 12px; width: 2px; background: var(--line-strong); transform: translateX(-1px); }
+  @media (max-width: 720px) { .timeline-rail::before { left: 12px; } }
+
+  /* Arrow hover slide */
+  .group:hover .arrow-slide { transform: translateX(4px); }
+  .arrow-slide { transition: transform .2s ease; }
+
+  /* Footer link subtle */
+  .footer-link { opacity: .85; transition: opacity .2s, color .2s; }
+  .footer-link:hover { opacity: 1; color: var(--accent); }
+
+  /* Quote mark */
+  .quote-mark { font-family: 'Fraunces', serif; line-height: 0.6; color: var(--primary); opacity: .25; }
+
+  /* Buttons — minimal, composed via component helpers in JSX */
+</style>
+</head>
+<body class="bg-bg text-ink">
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="components/Data.jsx"></script>
+<script type="text/babel" src="components/constants.jsx"></script>
+<script type="text/babel" src="components/PH.jsx"></script>
+<script type="text/babel" src="components/Icon.jsx"></script>
+<script type="text/babel" src="components/Crest.jsx"></script>
+<script type="text/babel" src="components/Nav.jsx"></script>
+<script type="text/babel" src="components/Footer.jsx"></script>
+<script type="text/babel" src="components/Home.jsx"></script>
+<script type="text/babel" src="components/Overview.jsx"></script>
+<script type="text/babel" src="components/History.jsx"></script>
+<script type="text/babel" src="components/Mission.jsx"></script>
+<script type="text/babel" src="components/About.jsx"></script>
+<script type="text/babel" src="components/TeacherCard.jsx"></script>
+<script type="text/babel" src="components/PersonCard.jsx"></script>
+<script type="text/babel" src="components/TeacherModal.jsx"></script>
+<script type="text/babel" src="components/Staff.jsx"></script>
+<script type="text/babel" src="components/News.jsx"></script>
+<script type="text/babel" src="components/Article.jsx"></script>
+<script type="text/babel" src="components/Schedule.jsx"></script>
+<script type="text/babel" src="components/Rules.jsx"></script>
+<script type="text/babel" src="components/Library.jsx"></script>
+<script type="text/babel" src="components/Students.jsx"></script>
+<script type="text/babel" src="components/Documents.jsx"></script>
+<script type="text/babel" src="components/App.jsx"></script>
+</body>
+</html>
