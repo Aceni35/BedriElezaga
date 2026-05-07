@@ -67,7 +67,7 @@ function Nav() {
   const studentsItems = [
     { id: 'orari',       t: t.nav.studentsScheduleTitle, s: t.nav.studentsScheduleSub },
     { id: 'rregullorja', t: t.nav.studentsRulesTitle,    s: t.nav.studentsRulesSub },
-    { id: 'biblioteka',  t: t.nav.studentsLibraryTitle,  s: t.nav.studentsLibrarySub, href: 'https://example.com' },
+    { id: 'biblioteka',  t: t.nav.studentsLibraryTitle,  s: t.nav.studentsLibrarySub, href: 'https://bedrielezaga.com/' },
   ];
   const staffEntries = Object.entries(t.staff.categories);
 
@@ -184,7 +184,7 @@ function Nav() {
           </div>
           <div className="pt-4 mt-2 border-t border-line">
             <div className="text-[11px] tracking-[.14em] uppercase text-primary font-semibold px-4 pb-2">{t.nav.students}</div>
-            {[['orari', t.nav.studentsScheduleTitle],['rregullorja', t.nav.studentsRulesTitle],['biblioteka', t.nav.studentsLibraryTitle, 'https://example.com']].map(([id,l,href]) => (
+            {[['orari', t.nav.studentsScheduleTitle],['rregullorja', t.nav.studentsRulesTitle],['biblioteka', t.nav.studentsLibraryTitle, 'https://bedrielezaga.com/']].map(([id,l,href]) => (
               <button key={id} onClick={() => href ? window.open(href, '_blank', 'noopener,noreferrer') : go('/students/' + id)} className="block w-full text-left px-4 py-2.5 text-sm text-ink-soft rounded-lg hover:bg-surface2 hover:text-ink">{l}</button>
             ))}
           </div>
