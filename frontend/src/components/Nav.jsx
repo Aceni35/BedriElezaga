@@ -191,7 +191,6 @@ function Nav() {
           <button className="block w-full text-left px-4 py-3.5 rounded-[14px] text-base font-medium hover:bg-primary-soft hover:text-primary" onClick={() => go('/documents')}>{t.nav.documents}</button>
           <button className="block w-full text-left px-4 py-3.5 rounded-[14px] text-base font-medium hover:bg-primary-soft hover:text-primary" onClick={() => go('/news')}>{t.nav.news}</button>
           <LanguageSwitcher variant="mobile" />
-          <button className={CX.btnPrimary + ' mt-3 w-full justify-center'} onClick={() => go('/about/overview')}>{t.nav.enroll}</button>
         </div>
       )}
     </>
