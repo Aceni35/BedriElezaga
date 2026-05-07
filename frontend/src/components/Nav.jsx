@@ -172,7 +172,7 @@ function Nav() {
           <button className="block w-full text-left px-4 py-3.5 rounded-[14px] text-base font-medium hover:bg-primary-soft hover:text-primary" onClick={() => go('/')}>{t.nav.home}</button>
           <div className="pt-4 mt-2 border-t border-line">
             <div className="text-[11px] tracking-[.14em] uppercase text-primary font-semibold px-4 pb-2">{t.nav.about}</div>
-            {[['overview', t.nav.aboutOverview],['history', t.nav.aboutHistoryTitle],['mission', t.nav.aboutMissionTitle]].map(([id,l]) => (
+            {[['history', t.nav.aboutHistoryTitle],['mission', t.nav.aboutMissionTitle]].map(([id,l]) => (
               <button key={id} onClick={() => go('/about/' + id)} className="block w-full text-left px-4 py-2.5 text-sm text-ink-soft rounded-lg hover:bg-surface2 hover:text-ink">{l}</button>
             ))}
           </div>
