@@ -22,6 +22,7 @@ import { StaffListPage } from '../admin/StaffListPage';
 import { DocumentsListPage } from '../admin/DocumentsListPage';
 import { SettingsPage } from '../admin/SettingsPage';
 import { UsersListPage } from '../admin/UsersListPage';
+import { RulesListPage } from '../admin/RulesListPage';
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "theme": "navy",
@@ -85,6 +86,7 @@ function App() {
             <Route path="news" element={<NewsListPage />} />
             <Route path="staff" element={<StaffListPage />} />
             <Route path="documents" element={<DocumentsListPage />} />
+            <Route path="rules" element={<RulesListPage />} />
             <Route path="settings" element={<SettingsPage />} />
             <Route element={<AdminRoute />}>
               <Route path="users" element={<UsersListPage />} />

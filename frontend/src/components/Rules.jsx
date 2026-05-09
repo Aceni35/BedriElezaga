@@ -2,14 +2,25 @@
 import React from 'react';
 import { CX, ICONS } from './constants.jsx';
 import Icon from './Icon.jsx';
+import { Spinner } from '../ui/Spinner';
 import { useSettings } from '../hooks/useSettings';
+import { useRulesList } from '../hooks/useRules';
 import { useI18n } from '../i18n/I18nContext';
 
+function pickLang(field, lang) {
+  if (!field) return '';
+  const v = field[lang];
+  if (typeof v === 'string' && v.trim()) return v;
+  return field.sq ?? '';
+}
+
 function Rules() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const r = t.rules;
   const { data: settings } = useSettings();
   const rulesFile = settings?.rules ?? null;
+  const { data: rulesData, isLoading, isError } = useRulesList();
+  const sections = rulesData?.items ?? [];
 
   return (
     <section className="py-12">
@@ -20,24 +31,38 @@ function Rules() {
           <p className="text-[17px] text-ink-soft leading-relaxed">{r.subtitle}</p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-5 mb-10">
-          {r.sections.map((s, i) => (
-            <div key={i} className="p-7 bg-surface border border-line rounded-[20px]">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-9 h-9 rounded-full bg-primary-soft text-primary flex items-center justify-center font-display font-semibold text-sm">{String(i+1).padStart(2,'0')}</div>
-                <h3 className="text-xl">{s.t}</h3>
+        {isLoading && (
+          <div className="py-16 flex justify-center text-primary">
+            <Spinner size={28} />
+          </div>
+        )}
+
+        {isError && !isLoading && (
+          <div className="py-16 text-center text-ink-soft text-sm border border-dashed border-line rounded-[20px] mb-10">
+            {t.common.errorGeneric}
+          </div>
+        )}
+
+        {!isLoading && !isError && sections.length > 0 && (
+          <div className="grid md:grid-cols-2 gap-5 mb-10">
+            {sections.map((s, i) => (
+              <div key={s.id} className="p-7 bg-surface border border-line rounded-[20px]">
+                <div className="flex items-center gap-3 mb-4">
+                  <div className="w-9 h-9 rounded-full bg-primary-soft text-primary flex items-center justify-center font-display font-semibold text-sm">{String(i+1).padStart(2,'0')}</div>
+                  <h3 className="text-xl">{pickLang(s.title, lang)}</h3>
+                </div>
+                <ul className="space-y-2.5">
+                  {s.items.map((it, j) => (
+                    <li key={j} className="grid grid-cols-[14px_1fr] gap-3 text-sm text-ink-soft leading-relaxed">
+                      <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2" />
+                      <div>{pickLang(it, lang)}</div>
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <ul className="space-y-2.5">
-                {s.items.map((it, j) => (
-                  <li key={j} className="grid grid-cols-[14px_1fr] gap-3 text-sm text-ink-soft leading-relaxed">
-                    <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2" />
-                    <div>{it}</div>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
 
         <div className="p-7 bg-primary text-white rounded-[20px] flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-4">

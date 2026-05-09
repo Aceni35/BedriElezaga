@@ -10,6 +10,7 @@ const baseShape = {
   email: z.string().email().max(200).optional().or(z.literal("")).transform((v) => (v ? v : undefined)),
   phone: z.string().min(3).max(40).trim().optional(),
   pictureKey: z.string().min(1),
+  fileKey: z.string().max(500).optional(),
 };
 
 export const createStaffSchema = z.object(baseShape);

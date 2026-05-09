@@ -21,6 +21,7 @@ const staffSchema = new Schema(
     email: { type: String, trim: true, lowercase: true },
     phone: { type: String, trim: true },
     pictureKey: { type: String, required: true },
+    fileKey: { type: String, default: "" },
   },
   { timestamps: true }
 );

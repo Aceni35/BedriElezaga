@@ -31,6 +31,10 @@ export const queryKeys = {
   settings: {
     all: ['settings'] as const,
   },
+  rules: {
+    all: ['rules'] as const,
+    lists: () => [...queryKeys.rules.all, 'list'] as const,
+  },
   users: {
     all: ['users'] as const,
     lists: () => [...queryKeys.users.all, 'list'] as const,

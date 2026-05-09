@@ -61,6 +61,38 @@ function TeacherModal({ staff, onClose }) {
         </div>
 
         <div className="px-9 pb-9 border-t border-line pt-7">
+          {staff.file?.url && (
+            <div className="flex items-center gap-3 p-4 mb-6 rounded-[14px] bg-surface border border-line">
+              <div className="w-10 h-10 rounded-lg bg-primary-soft text-primary flex items-center justify-center shrink-0">
+                <Icon path="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8l-6-6zM14 2v6h6" size={18} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-medium truncate">{tt.fileTitle}</div>
+                <div className="text-xs text-ink-soft truncate">{decodeURIComponent(staff.file.key.split('/').pop() || staff.file.key)}</div>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <a
+                  href={staff.file.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium border border-line hover:border-primary hover:text-primary transition-colors"
+                >
+                  <Icon path="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8zM12 15a3 3 0 100-6 3 3 0 000 6z" size={12} />
+                  {tt.btnView}
+                </a>
+                <a
+                  href={staff.file.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  download
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-primary text-white hover:bg-primary-deep transition-colors"
+                >
+                  <Icon path="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3" size={12} />
+                  {tt.btnDownload}
+                </a>
+              </div>
+            </div>
+          )}
           <p className="text-ink-soft leading-[1.7] mb-6 whitespace-pre-line">{staff.description || tt.noDescription}</p>
           <div className="grid grid-cols-2 gap-4 p-5 bg-surface rounded-[14px]">
             {facts.map(([l, v]) => (

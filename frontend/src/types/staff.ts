@@ -25,6 +25,11 @@ export interface StaffPicture {
   url: string;
 }
 
+export interface StaffFile {
+  key: string;
+  url: string;
+}
+
 export interface Staff {
   id: string;
   fullName: string;
@@ -35,6 +40,7 @@ export interface Staff {
   email: string | null;
   phone: string | null;
   picture: StaffPicture;
+  file: StaffFile | null;
   createdAt: string;
   updatedAt: string;
 }
@@ -48,6 +54,7 @@ export interface CreateStaffInput {
   email?: string;
   phone?: string;
   pictureKey: string;
+  fileKey?: string;
 }
 
 export type UpdateStaffInput = Partial<CreateStaffInput>;

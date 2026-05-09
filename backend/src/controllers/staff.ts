@@ -22,6 +22,7 @@ function toResponse(doc: StaffDoc) {
     email: doc.email ?? null,
     phone: doc.phone ?? null,
     picture: { key: doc.pictureKey, url: publicUrlFor(doc.pictureKey) },
+    file: doc.fileKey ? { key: doc.fileKey, url: publicUrlFor(doc.fileKey) } : null,
     createdAt: (doc as unknown as { createdAt: Date }).createdAt,
     updatedAt: (doc as unknown as { updatedAt: Date }).updatedAt,
   };
@@ -107,10 +108,14 @@ export const updateStaff: RequestHandler = async (req, res) => {
   if (!doc) throw notFound();
 
   const data = parsed.data;
-  let orphanKey: string | null = null;
+  const orphans: string[] = [];
   if (data.pictureKey && data.pictureKey !== doc.pictureKey) {
-    orphanKey = doc.pictureKey;
+    orphans.push(doc.pictureKey);
     doc.pictureKey = data.pictureKey;
+  }
+  if (data.fileKey !== undefined && data.fileKey !== doc.fileKey) {
+    if (doc.fileKey) orphans.push(doc.fileKey);
+    doc.fileKey = data.fileKey;
   }
   if (data.fullName !== undefined) doc.fullName = data.fullName;
   if (data.category !== undefined) doc.category = data.category;
@@ -121,7 +126,7 @@ export const updateStaff: RequestHandler = async (req, res) => {
   if (data.phone !== undefined) doc.phone = data.phone;
 
   await doc.save();
-  if (orphanKey) await safeDeleteKey(orphanKey);
+  if (orphans.length) await Promise.all(orphans.map(safeDeleteKey));
 
   res.status(StatusCodes.OK).json(toResponse(doc));
 };
@@ -134,6 +139,7 @@ export const deleteStaff: RequestHandler = async (req, res) => {
   if (!doc) throw notFound();
 
   await safeDeleteKey(doc.pictureKey);
+  if (doc.fileKey) await safeDeleteKey(doc.fileKey);
 
   res.status(StatusCodes.NO_CONTENT).send();
 };

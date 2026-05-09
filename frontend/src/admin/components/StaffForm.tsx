@@ -68,6 +68,9 @@ export function StaffForm(props: StaffFormProps) {
   const [pictureFile, setPictureFile] = useState<File | null>(null);
   const [picturePreview, setPicturePreview] = useState<string | null>(null);
   const [pictureError, setPictureError] = useState<string | null>(null);
+  const [docFile, setDocFile] = useState<File | null>(null);
+  const [docError, setDocError] = useState<string | null>(null);
+  const [removeExistingDoc, setRemoveExistingDoc] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -91,6 +94,36 @@ export function StaffForm(props: StaffFormProps) {
     setPictureFile(file);
   };
 
+  const ALLOWED_DOC_TYPES = new Set([
+    'application/pdf',
+    'application/msword',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  ]);
+  const ALLOWED_DOC_EXTS = new Set(['pdf', 'doc', 'docx']);
+  const MIME_BY_EXT: Record<string, string> = {
+    pdf: 'application/pdf',
+    doc: 'application/msword',
+    docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  };
+
+  const handleDocFiles = (files: File[]) => {
+    const raw = files[0];
+    if (!raw) return;
+    const dot = raw.name.lastIndexOf('.');
+    const ext = dot === -1 ? '' : raw.name.slice(dot + 1).toLowerCase();
+    let file = raw;
+    if ((!file.type || file.type === 'application/octet-stream') && MIME_BY_EXT[ext]) {
+      file = new File([raw], raw.name, { type: MIME_BY_EXT[ext], lastModified: raw.lastModified });
+    }
+    if (!ALLOWED_DOC_TYPES.has(file.type) && !ALLOWED_DOC_EXTS.has(ext)) {
+      setDocError(fStaff.onlyAllowedFiles);
+      return;
+    }
+    setDocError(null);
+    setDocFile(file);
+    setRemoveExistingDoc(false);
+  };
+
   const categoryOptions = useMemo(
     () => STAFF_CATEGORIES.map((c) => ({ value: c, label: t.staff.categories[c] || c })),
     [t]
@@ -112,6 +145,14 @@ export function StaffForm(props: StaffFormProps) {
         pictureKey = uploaded.key;
       }
 
+      let fileKey: string | undefined;
+      if (docFile) {
+        const uploaded = await uploadsService.uploadFile(docFile);
+        fileKey = uploaded.key;
+      } else if (removeExistingDoc) {
+        fileKey = '';
+      }
+
       const trimmedDescription = values.description?.trim() || undefined;
       const trimmedEmail = values.email?.trim() || undefined;
       const trimmedPhone = values.phone?.trim() || undefined;
@@ -127,6 +168,7 @@ export function StaffForm(props: StaffFormProps) {
           phone: trimmedPhone,
           pictureKey: pictureKey as string,
         };
+        if (fileKey) payload.fileKey = fileKey;
         const created = await createStaff.mutateAsync(payload);
         if (onDone) onDone(created);
         else navigate('/admin/staff');
@@ -141,6 +183,7 @@ export function StaffForm(props: StaffFormProps) {
           phone: trimmedPhone,
         };
         if (pictureKey) payload.pictureKey = pictureKey;
+        if (fileKey !== undefined) payload.fileKey = fileKey;
         const updated = await updateStaff.mutateAsync({ id: initial!.id, input: payload });
         if (onDone) onDone(updated);
         else navigate('/admin/staff');
@@ -269,6 +312,70 @@ export function StaffForm(props: StaffFormProps) {
         {pictureError && <div className="mt-1 text-xs text-red-600">{pictureError}</div>}
       </div>
 
+      <div>
+        <label className={labelClass}>{fStaff.fileOpt}</label>
+        {docFile ? (
+          <div className="flex items-center gap-4 p-3 rounded-xl bg-surface border border-line mb-3">
+            <div className="w-12 h-12 rounded-lg bg-bg flex items-center justify-center shrink-0 text-ink-soft">
+              <DocumentIcon />
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="text-sm font-medium truncate">{docFile.name}</div>
+              <div className="text-xs text-ink-soft">{formatBytes(docFile.size)}</div>
+            </div>
+            <button
+              type="button"
+              onClick={() => setDocFile(null)}
+              className="text-xs text-ink-soft hover:text-red-600 shrink-0"
+            >
+              {aCommon.remove}
+            </button>
+          </div>
+        ) : initial?.file && !removeExistingDoc ? (
+          <div className="flex items-center gap-4 p-3 rounded-xl bg-surface border border-line mb-3">
+            <div className="w-12 h-12 rounded-lg bg-bg flex items-center justify-center shrink-0 text-ink-soft">
+              <DocumentIcon />
+            </div>
+            <div className="flex-1 min-w-0">
+              <a
+                href={initial.file.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-medium truncate hover:text-primary block"
+              >
+                {decodeURIComponent(initial.file.key.split('/').pop() || initial.file.key)}
+              </a>
+            </div>
+            <button
+              type="button"
+              onClick={() => setRemoveExistingDoc(true)}
+              className="text-xs text-ink-soft hover:text-red-600 shrink-0"
+            >
+              {aCommon.remove}
+            </button>
+          </div>
+        ) : removeExistingDoc ? (
+          <div className="flex items-center justify-between gap-4 p-3 rounded-xl bg-red-50 border border-red-200 mb-3">
+            <div className="text-xs text-red-700">{aCommon.remove}</div>
+            <button
+              type="button"
+              onClick={() => setRemoveExistingDoc(false)}
+              className="text-xs text-ink-soft hover:text-ink shrink-0"
+            >
+              {aCommon.cancel}
+            </button>
+          </div>
+        ) : null}
+        <FileDropZone
+          accept="application/pdf,.pdf,.doc,.docx"
+          onFiles={handleDocFiles}
+          icon={<DocumentIcon />}
+          title={docFile || (initial?.file && !removeExistingDoc) ? fStaff.replaceFile : fStaff.uploadFile}
+          hint={fStaff.fileHint}
+        />
+        {docError && <div className="mt-1 text-xs text-red-600">{docError}</div>}
+      </div>
+
       {submitError && (
         <div className="px-3 py-2 text-sm rounded-lg bg-red-50 text-red-700 border border-red-200">
           {submitError}
@@ -292,6 +399,25 @@ export function StaffForm(props: StaffFormProps) {
         </button>
       </div>
     </form>
+  );
+}
+
+function DocumentIcon() {
+  return (
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className="text-primary"
+    >
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+      <polyline points="14 2 14 8 20 8" />
+    </svg>
   );
 }
 

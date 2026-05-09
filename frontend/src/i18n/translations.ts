@@ -292,6 +292,9 @@ export interface Dict {
     factPhone: string;
     aboutTitle: string; // "Për {first}"
     noDescription: string;
+    fileTitle: string;
+    btnView: string;
+    btnDownload: string;
   };
 
   admin: {
@@ -301,6 +304,7 @@ export interface Dict {
       news: string;
       staff: string;
       documents: string;
+      rules: string;
       settings: string;
       users: string;
     };
@@ -372,6 +376,32 @@ export interface Dict {
       empty: string;
       createTitle: string;
       editTitle: string;
+    };
+
+    rules: {
+      title: string;
+      subtitle: string;
+      newButton: string;
+      empty: string;
+      createTitle: string;
+      editTitle: string;
+      titleField: string;
+      titlePlaceholder: string;
+      itemsField: string;
+      itemPlaceholder: string;
+      addItem: string;
+      titleRequired: string;
+      itemRequired: string;
+      translateHint: string;
+      sourceLanguage: string;
+      translateBtn: string;
+      translatingBtn: string;
+      retranslateBtn: string;
+      missingLanguages: string;
+      langLabelSq: string;
+      langLabelEn: string;
+      langLabelMe: string;
+      reviewHint: string;
     };
 
     users: {
@@ -464,6 +494,11 @@ export interface Dict {
         photoHint: string;
         photoMustBeImage: string;
         photoRequired: string;
+        fileOpt: string;
+        replaceFile: string;
+        uploadFile: string;
+        fileHint: string;
+        onlyAllowedFiles: string;
       };
       documents: {
         nameField: string;
@@ -1121,6 +1156,9 @@ const sq: Dict = {
     factPhone: "Telefon",
     aboutTitle: "Për {first}",
     noDescription: "Nuk ka përshkrim të disponueshëm.",
+    fileTitle: "Dokument bashkangjitur",
+    btnView: "Shiko",
+    btnDownload: "Shkarko",
   },
   admin: {
     section: "Admin",
@@ -1129,6 +1167,7 @@ const sq: Dict = {
       news: "Lajmet",
       staff: "Stafi",
       documents: "Dokumentet",
+      rules: "Rregullorja",
       settings: "Cilësimet",
       users: "Përdoruesit",
     },
@@ -1194,6 +1233,33 @@ const sq: Dict = {
       empty: "Nuk ka dokumente në këtë kategori.",
       createTitle: "Shto dokument",
       editTitle: "Edito dokumentin",
+    },
+    rules: {
+      title: "Rregullorja",
+      subtitle:
+        "Menaxho seksionet e rregullores që shfaqen publikisht. Shkruaj në shqip — përkthimi në anglisht dhe malazisht bëhet automatikisht.",
+      newButton: "Shto rregull",
+      empty: "Nuk ka rregulla ende.",
+      createTitle: "Shto rregull të ri",
+      editTitle: "Edito rregullën",
+      titleField: "Titulli i seksionit",
+      titlePlaceholder: "P.sh. Prezenca dhe vonesat",
+      itemsField: "Pikat e rregullës",
+      itemPlaceholder: "Shkruaj një rregull...",
+      addItem: "Shto pikë",
+      titleRequired: "Titulli është i detyrueshëm në të tre gjuhët.",
+      itemRequired: "Çdo pikë duhet të ketë tekst në të tre gjuhët.",
+      translateHint:
+        "Zgjidh gjuhën burimore, plotëso fushat, klik 'Përkthe' dhe rishiko të tri gjuhët.",
+      sourceLanguage: "Gjuha burimore",
+      translateBtn: "Përkthe në gjuhët e tjera",
+      translatingBtn: "Duke përkthyer...",
+      retranslateBtn: "Përkthe sërish",
+      missingLanguages: "Plotëso titullin dhe pikat në të tri gjuhët para ruajtjes.",
+      langLabelSq: "Shqip",
+      langLabelEn: "Anglisht",
+      langLabelMe: "Malazisht",
+      reviewHint: "Rishiko dhe korrigjo përkthimet në të tri skedat para ruajtjes.",
     },
     users: {
       title: "Përdoruesit",
@@ -1283,6 +1349,11 @@ const sq: Dict = {
         photoHint: "JPG, PNG, WEBP, AVIF — max 10 MB",
         photoMustBeImage: "Fotoja duhet të jetë imazh",
         photoRequired: "Fotoja është e detyrueshme",
+        fileOpt: "Skedari (opsional)",
+        replaceFile: "Zëvendëso skedarin",
+        uploadFile: "Kliko ose tërhiq skedarin",
+        fileHint: "PDF, DOC ose DOCX — max 25 MB",
+        onlyAllowedFiles: "Lejohen vetëm PDF, DOC dhe DOCX",
       },
       documents: {
         nameField: "Emri",
@@ -1935,6 +2006,9 @@ const en: Dict = {
     factPhone: "Phone",
     aboutTitle: "About {first}",
     noDescription: "No description available.",
+    fileTitle: "Attached document",
+    btnView: "View",
+    btnDownload: "Download",
   },
   admin: {
     section: "Admin",
@@ -1943,6 +2017,7 @@ const en: Dict = {
       news: "News",
       staff: "Staff",
       documents: "Documents",
+      rules: "Regulations",
       settings: "Settings",
       users: "Users",
     },
@@ -2008,6 +2083,33 @@ const en: Dict = {
       empty: "No documents in this category.",
       createTitle: "Add document",
       editTitle: "Edit document",
+    },
+    rules: {
+      title: "Regulations",
+      subtitle:
+        "Manage the rule sections shown publicly. Write in one language, click “Translate” and review all three before saving.",
+      newButton: "Add rule",
+      empty: "No rules yet.",
+      createTitle: "Add new rule",
+      editTitle: "Edit rule",
+      titleField: "Section title",
+      titlePlaceholder: "e.g. Attendance and tardiness",
+      itemsField: "Rule points",
+      itemPlaceholder: "Type a rule...",
+      addItem: "Add point",
+      titleRequired: "Title is required in all three languages.",
+      itemRequired: "Each point must have text in all three languages.",
+      translateHint:
+        "Pick a source language, fill in the fields, click “Translate” and review all three.",
+      sourceLanguage: "Source language",
+      translateBtn: "Translate to other languages",
+      translatingBtn: "Translating...",
+      retranslateBtn: "Translate again",
+      missingLanguages: "Fill the title and points in all three languages before saving.",
+      langLabelSq: "Albanian",
+      langLabelEn: "English",
+      langLabelMe: "Montenegrin",
+      reviewHint: "Review and correct the translations on all three tabs before saving.",
     },
     users: {
       title: "Users",
@@ -2097,6 +2199,11 @@ const en: Dict = {
         photoHint: "JPG, PNG, WEBP, AVIF — max 10 MB",
         photoMustBeImage: "Photo must be an image",
         photoRequired: "Photo is required",
+        fileOpt: "File (optional)",
+        replaceFile: "Replace file",
+        uploadFile: "Click or drop the file",
+        fileHint: "PDF, DOC or DOCX — max 25 MB",
+        onlyAllowedFiles: "Only PDF, DOC and DOCX are allowed",
       },
       documents: {
         nameField: "Name",
@@ -2193,7 +2300,7 @@ const me: Dict = {
     heroTitleA: "Škola u kojoj svako dijete",
     heroTitleB: "pronalazi svoju svjetlost.",
     heroSubtitle:
-      'U srcu Ane e Malita, Osnovna škola "Bedri Elezaga" generacijama uči djecu na maternjem albanskom jeziku — kroz mrežu škola koja povezuje čitava sela u jednu obrazovnu porodicu.',
+      'U srcu Ana Malit, Osnovna škola "Bedri Elezaga" generacijama uči djecu na maternjem albanskom jeziku — kroz mrežu škola koja povezuje čitava sela u jednu obrazovnu porodicu.',
     btnAboutUs: "Upoznajte nas",
     btnLatestNews: "Najnovije vijesti",
     statFounded: "Osnovana",
@@ -2744,6 +2851,9 @@ const me: Dict = {
     factPhone: "Telefon",
     aboutTitle: "O {first}",
     noDescription: "Opis nije dostupan.",
+    fileTitle: "Priloženi dokument",
+    btnView: "Pregledaj",
+    btnDownload: "Preuzmi",
   },
   admin: {
     section: "Admin",
@@ -2752,6 +2862,7 @@ const me: Dict = {
       news: "Vijesti",
       staff: "Osoblje",
       documents: "Dokumenti",
+      rules: "Pravilnik",
       settings: "Podešavanja",
       users: "Korisnici",
     },
@@ -2817,6 +2928,33 @@ const me: Dict = {
       empty: "Nema dokumenata u ovoj kategoriji.",
       createTitle: "Dodaj dokument",
       editTitle: "Uredi dokument",
+    },
+    rules: {
+      title: "Pravilnik",
+      subtitle:
+        "Upravljaj sekcijama pravilnika koje su javno prikazane. Napišite na jednom jeziku, kliknite “Prevedi” i pregledajte sva tri jezika prije čuvanja.",
+      newButton: "Dodaj pravilo",
+      empty: "Još nema pravila.",
+      createTitle: "Dodaj novo pravilo",
+      editTitle: "Uredi pravilo",
+      titleField: "Naslov sekcije",
+      titlePlaceholder: "Npr. Prisustvo i kašnjenje",
+      itemsField: "Stavke pravila",
+      itemPlaceholder: "Unesite pravilo...",
+      addItem: "Dodaj stavku",
+      titleRequired: "Naslov je obavezan na sva tri jezika.",
+      itemRequired: "Svaka stavka mora imati tekst na sva tri jezika.",
+      translateHint:
+        "Izaberite izvorni jezik, popunite polja, kliknite “Prevedi” i pregledajte sva tri jezika.",
+      sourceLanguage: "Izvorni jezik",
+      translateBtn: "Prevedi na ostale jezike",
+      translatingBtn: "Prevođenje...",
+      retranslateBtn: "Prevedi ponovo",
+      missingLanguages: "Popunite naslov i stavke na sva tri jezika prije čuvanja.",
+      langLabelSq: "Albanski",
+      langLabelEn: "Engleski",
+      langLabelMe: "Crnogorski",
+      reviewHint: "Pregledajte i ispravite prevode u sve tri kartice prije čuvanja.",
     },
     users: {
       title: "Korisnici",
@@ -2906,6 +3044,11 @@ const me: Dict = {
         photoHint: "JPG, PNG, WEBP, AVIF — max 10 MB",
         photoMustBeImage: "Fotografija mora biti slika",
         photoRequired: "Fotografija je obavezna",
+        fileOpt: "Datoteka (opciono)",
+        replaceFile: "Zamijeni datoteku",
+        uploadFile: "Kliknite ili prevucite datoteku",
+        fileHint: "PDF, DOC ili DOCX — max 25 MB",
+        onlyAllowedFiles: "Dozvoljeni su samo PDF, DOC i DOCX",
       },
       documents: {
         nameField: "Naziv",
