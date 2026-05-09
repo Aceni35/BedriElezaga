@@ -3,7 +3,6 @@ import React from 'react';
 import { useLocation, useNavigate, useMatch } from 'react-router-dom';
 import { CX, ICONS } from './constants.jsx';
 import Icon from './Icon.jsx';
-import Crest from './Crest.jsx';
 import LanguageSwitcher from './LanguageSwitcher.jsx';
 import { useI18n } from '../i18n/I18nContext';
 
@@ -76,7 +75,11 @@ function Nav() {
       <header className={'sticky top-0 z-50 transition-all border-b border-transparent ' + (scrolled ? 'nav-glass-scrolled' : 'nav-glass')}>
         <div className={CX.container + ' flex items-center gap-6 h-[76px]'}>
           <button className="flex items-center gap-3 text-left" onClick={() => go('/')}>
-            <Crest />
+            <img
+              src="https://pub-a1b19793d15448139486af8924561c8b.r2.dev/logo-bedri-2.png"
+              alt={t.common.schoolShortName}
+              className="h-11 w-11 object-contain"
+            />
             <div>
               <div className="font-display text-[17px] font-semibold leading-tight tracking-tight">{t.common.schoolShortName}</div>
               <div className="hidden md:block text-[11px] text-ink-soft tracking-wide">{t.common.schoolTagline}</div>

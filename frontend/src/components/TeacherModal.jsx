@@ -61,7 +61,6 @@ function TeacherModal({ staff, onClose }) {
         </div>
 
         <div className="px-9 pb-9 border-t border-line pt-7">
-          <h3 className="text-lg mb-3">{interpolate(tt.aboutTitle, { first: firstName })}</h3>
           <p className="text-ink-soft leading-[1.7] mb-6 whitespace-pre-line">{staff.description || tt.noDescription}</p>
           <div className="grid grid-cols-2 gap-4 p-5 bg-surface rounded-[14px]">
             {facts.map(([l, v]) => (

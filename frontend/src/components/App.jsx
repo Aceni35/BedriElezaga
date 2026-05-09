@@ -24,7 +24,7 @@ import { SettingsPage } from '../admin/SettingsPage';
 import { UsersListPage } from '../admin/UsersListPage';
 
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
-  "theme": "burgundy",
+  "theme": "navy",
   "homeLayout": "editorial"
 }/*EDITMODE-END*/;
 

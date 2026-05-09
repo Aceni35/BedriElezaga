@@ -5,15 +5,18 @@ import { BadRequestError } from "../errors/index.js";
 import { deleteObject, publicUrlFor } from "../helpers/r2.js";
 import { updateSettingsSchema } from "../validators/settings.js";
 
+function fileOrNull(key: string | undefined | null) {
+  return key ? { key, url: publicUrlFor(key) } : null;
+}
+
 function toResponse(doc: SettingsDoc) {
   return {
     directorName: doc.directorName ?? "",
-    timetable: doc.timetableKey
-      ? { key: doc.timetableKey, url: publicUrlFor(doc.timetableKey) }
-      : null,
-    rules: doc.rulesKey
-      ? { key: doc.rulesKey, url: publicUrlFor(doc.rulesKey) }
-      : null,
+    timetable: fileOrNull(doc.timetableKey),
+    rules: fileOrNull(doc.rulesKey),
+    homeImage1: fileOrNull(doc.homeImage1Key),
+    homeImage2: fileOrNull(doc.homeImage2Key),
+    homeImage3: fileOrNull(doc.homeImage3Key),
     updatedAt: (doc as unknown as { updatedAt: Date }).updatedAt,
   };
 }
@@ -54,6 +57,14 @@ export const updateSettings: RequestHandler = async (req, res) => {
   if (data.rulesKey !== undefined && data.rulesKey !== doc.rulesKey) {
     if (doc.rulesKey) orphans.push(doc.rulesKey);
     doc.rulesKey = data.rulesKey;
+  }
+
+  for (const field of ["homeImage1Key", "homeImage2Key", "homeImage3Key"] as const) {
+    const next = data[field];
+    if (next !== undefined && next !== doc[field]) {
+      if (doc[field]) orphans.push(doc[field] as string);
+      doc[field] = next;
+    }
   }
 
   await doc.save();

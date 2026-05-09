@@ -33,18 +33,24 @@
   --primary: #7a2e2e; --primary-deep: #5c1f1f; --primary-soft: #e8d4d0;
   --accent: #c89961; --accent-soft: #f0e2cc;
   --line: #e5dac7; --line-strong: #d4c3a8;
+  --nav-bg: rgba(245,238,228,.7);
+  --nav-bg-scrolled: rgba(250,246,239,.92);
 }
 [data-theme="forest"] {
   --bg: #eef2ea; --surface: #f7f9f3; --surface-2: #e3ead9;
   --ink: #1f2a1e; --ink-soft: #556153;
   --primary: #2d4a3e; --primary-deep: #1d3328; --primary-soft: #d4e0d0;
   --line: #dde4d3; --line-strong: #c1cdb3;
+  --nav-bg: rgba(238,242,234,.7);
+  --nav-bg-scrolled: rgba(247,249,243,.92);
 }
 [data-theme="navy"] {
   --bg: #edeef3; --surface: #f7f8fb; --surface-2: #dfe2eb;
   --ink: #1a1f2e; --ink-soft: #566075;
   --primary: #1a2942; --primary-deep: #0f1a2e; --primary-soft: #d3d9e4;
   --line: #dadee8; --line-strong: #b8c0d0;
+  --nav-bg: rgba(237,238,243,.7);
+  --nav-bg-scrolled: rgba(247,248,251,.92);
 }
 
 /* ── Base ── */
@@ -86,8 +92,8 @@ h1, h2, h3, h4 {
 }
 
 /* ── Nav glass ── */
-.nav-glass { background: rgba(245,238,228,.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
-.nav-glass-scrolled { background: rgba(250,246,239,.92); border-bottom: 1px solid var(--line); }
+.nav-glass { background: var(--nav-bg); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); }
+.nav-glass-scrolled { background: var(--nav-bg-scrolled); border-bottom: 1px solid var(--line); }
 
 /* ── Animations ── */
 @keyframes dd-in { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }

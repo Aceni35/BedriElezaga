@@ -1,23 +1,23 @@
 export const STAFF_CATEGORIES = [
-  'school_bodies',
-  'directorate',
-  'administration',
-  'professional_associates',
-  'teachers',
-  'assistants',
-  'maintenance',
+  "school_bodies",
+  "directorate",
+  "administration",
+  "professional_associates",
+  "teachers",
+  "assistants",
+  "maintenance",
 ] as const;
 
 export type StaffCategory = (typeof STAFF_CATEGORIES)[number];
 
 export const STAFF_CATEGORY_LABELS: Record<StaffCategory, string> = {
-  school_bodies: 'Organet e shkollës',
-  directorate: 'Drejtoria',
-  administration: 'Administrata',
-  professional_associates: 'Bashkëpunëtorët profesionalë',
-  teachers: 'Mësuesit',
-  assistants: 'Asistentët',
-  maintenance: 'Mirëmbajtja',
+  school_bodies: "Organet e shkollës",
+  directorate: "Drejtoria",
+  administration: "Administrata",
+  professional_associates: "Bashkëpunëtorët profesionalë",
+  teachers: "Mësimdhënësit",
+  assistants: "Asistentët",
+  maintenance: "Mirëmbajtja",
 };
 
 export interface StaffPicture {

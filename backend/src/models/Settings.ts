@@ -5,6 +5,9 @@ const settingsSchema = new Schema(
     directorName: { type: String, default: "", trim: true },
     timetableKey: { type: String, default: "" },
     rulesKey: { type: String, default: "" },
+    homeImage1Key: { type: String, default: "" },
+    homeImage2Key: { type: String, default: "" },
+    homeImage3Key: { type: String, default: "" },
   },
   { timestamps: true }
 );

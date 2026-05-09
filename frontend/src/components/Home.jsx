@@ -25,6 +25,9 @@ function Home() {
   const { data: newsData, isLoading: newsLoading } = useNewsList({ limit: 5, sort: '-publishedAt' });
   const { data: settings } = useSettings();
   const directorName = settings?.directorName?.trim() || '';
+  const homeImage1 = settings?.homeImage1?.url || null;
+  const homeImage2 = settings?.homeImage2?.url || null;
+  const homeImage3 = settings?.homeImage3?.url || null;
   const newsItems = newsData?.items ?? [];
   const lead = newsItems.slice(0, 1);
   const others = newsItems.slice(1, 5);
@@ -76,10 +79,14 @@ function Home() {
           </div>
           <div className={'relative ' + (compact ? 'h-[480px]' : 'h-[580px]') + ' max-md:h-[400px]'}>
             <div className="absolute top-0 right-0 w-[75%] h-[85%] rounded-[28px] overflow-hidden shadow-lg">
-              <PH label={t.home.photoYard} ratio="4/5" />
+              {homeImage1
+                ? <ImageFit src={homeImage1} alt={t.home.photoYard} aspectRatio="4/5" />
+                : <PH label={t.home.photoYard} ratio="4/5" />}
             </div>
             <div className="absolute bottom-0 left-0 w-[45%] rounded-[28px] overflow-hidden shadow-md" style={{ border: '6px solid var(--bg)' }}>
-              <PH label={t.home.photoClass} ratio="1/1" />
+              {homeImage2
+                ? <ImageFit src={homeImage2} alt={t.home.photoClass} aspectRatio="1/1" />
+                : <PH label={t.home.photoClass} ratio="1/1" />}
             </div>
             <div className="absolute top-8 left-0 bg-surface border border-line px-4 py-2.5 rounded-full shadow-sm flex items-center gap-2 text-[13px] font-medium text-primary">
               <Icon path={ICONS.star} size={14} /> <span>{t.home.sinceBadge}</span>
@@ -108,7 +115,11 @@ function Home() {
       <section className="py-24">
         <div className={CX.container + ' grid md:grid-cols-[1fr_1.1fr] gap-[72px] items-center'}>
           <div className="relative">
-            <div className="rounded-[28px] shadow-md overflow-hidden"><PH label={t.home.photoClass} ratio="4/5" /></div>
+            <div className="rounded-[28px] shadow-md overflow-hidden">
+              {homeImage3
+                ? <ImageFit src={homeImage3} alt={t.home.photoClass} aspectRatio="4/5" />
+                : <PH label={t.home.photoClass} ratio="4/5" />}
+            </div>
             <div className="absolute bottom-6 left-6 bg-surface rounded-full px-4 py-2.5 flex items-center gap-2 text-[13px] font-medium text-primary shadow-md">
               <Icon path={ICONS.heart} size={14} /> <span>{t.home.introBadge}</span>
             </div>

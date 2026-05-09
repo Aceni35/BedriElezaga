@@ -48,15 +48,26 @@ function Rules() {
             </div>
           </div>
           {rulesFile ? (
-            <a
-              href={rulesFile.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              download
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-full text-sm font-medium bg-white text-primary hover:bg-accent-soft transition-all"
-            >
-              {r.btnDownload} <Icon path={ICONS.arrowRight} size={14} />
-            </a>
+            <div className="flex items-center gap-2 flex-wrap">
+              <a
+                href={rulesFile.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-full text-sm font-medium bg-white/15 text-white hover:bg-white/25 transition-all"
+              >
+                <Icon path="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8zM12 15a3 3 0 100-6 3 3 0 000 6z" size={14} />
+                {r.btnView}
+              </a>
+              <a
+                href={rulesFile.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                download
+                className="inline-flex items-center gap-2 px-5 py-3 rounded-full text-sm font-medium bg-white text-primary hover:bg-accent-soft transition-all"
+              >
+                {r.btnDownload} <Icon path={ICONS.arrowRight} size={14} />
+              </a>
+            </div>
           ) : (
             <button
               type="button"
