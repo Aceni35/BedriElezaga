@@ -7,6 +7,7 @@ import TeacherCard from './TeacherCard.jsx';
 import TeacherModal from './TeacherModal.jsx';
 import { Spinner } from '../ui/Spinner';
 import { useStaffList } from '../hooks/useStaff';
+import { useGallery } from '../hooks/useGallery';
 import { useI18n, interpolate } from '../i18n/I18nContext';
 
 const TEACHERS_CATEGORY = 'teachers';
@@ -54,6 +55,15 @@ function Staff() {
   const [positionFilter, setPositionFilter] = React.useState('all');
 
   const { data: staffData, isLoading } = useStaffList({ limit: 100, sort: 'fullName' });
+  const { data: galleryData } = useGallery();
+  const galleryByCategory = React.useMemo(() => {
+    const map = {};
+    for (const item of galleryData?.items ?? []) {
+      if (item.section === 'staff') map[item.category] = item;
+    }
+    return map;
+  }, [galleryData]);
+  const categoryImage = galleryByCategory[activeCat] || null;
   const allStaff = staffData?.items ?? [];
   const peopleInCategory = allStaff.filter((s) => s.category === activeCat);
   const categoryCounts = React.useMemo(() => {
@@ -77,9 +87,22 @@ function Staff() {
       <section className="relative overflow-hidden pt-[72px] pb-14 bg-surface border-b border-line">
         <div className="pointer-events-none absolute -top-36 -right-24 w-[400px] h-[400px] rounded-full" style={{ background: 'radial-gradient(circle, var(--primary-soft), transparent 70%)', opacity: 0.6 }} />
         <div className={CX.container + ' relative'}>
-          <div className={CX.eyebrow}>{t.staff.eyebrow}</div>
-          <h1 className="text-[clamp(40px,5vw,60px)] mt-4 mb-5 max-w-[860px] text-balance">{t.staff.title}</h1>
-          <p className="text-[18px] text-ink-soft max-w-[640px] leading-relaxed">{t.staff.subtitle}</p>
+          <div className={'grid gap-10 items-center ' + (categoryImage ? 'lg:grid-cols-[1fr_minmax(280px,420px)]' : '')}>
+            <div>
+              <div className={CX.eyebrow}>{t.staff.eyebrow}</div>
+              <h1 className="text-[clamp(40px,5vw,60px)] mt-4 mb-5 max-w-[860px] text-balance">{t.staff.title}</h1>
+              <p className="text-[18px] text-ink-soft max-w-[640px] leading-relaxed">{t.staff.subtitle}</p>
+            </div>
+            {categoryImage && (
+              <div className="relative rounded-[28px] overflow-hidden aspect-[4/3] shadow-sm border border-line bg-bg">
+                <img
+                  src={categoryImage.picture.url}
+                  alt={catData.label}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              </div>
+            )}
+          </div>
         </div>
       </section>
 

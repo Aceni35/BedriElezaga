@@ -17,7 +17,8 @@ const attachmentSchema = new Schema(
 const newsSchema = new Schema(
   {
     title: { type: String, required: true, trim: true },
-    body: { type: [String], required: true, default: [] },
+    body: { type: [String], default: [] },
+    bodyHtml: { type: String, default: "" },
     coverImageKey: { type: String, required: true },
     category: { type: String, enum: NEWS_CATEGORIES, required: true },
     author: {

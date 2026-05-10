@@ -8,6 +8,7 @@ import { newsRouter } from "./routers/news.js";
 import { staffRouter } from "./routers/staff.js";
 import { documentsRouter } from "./routers/documents.js";
 import { settingsRouter } from "./routers/settings.js";
+import { galleryRouter } from "./routers/gallery.js";
 import { usersRouter } from "./routers/users.js";
 import { rulesRouter } from "./routers/rules.js";
 import { errorHandler } from "./middleware/errorHandler.js";
@@ -24,6 +25,7 @@ app.use("/api/v1/news", newsRouter);
 app.use("/api/v1/staff", staffRouter);
 app.use("/api/v1/documents", documentsRouter);
 app.use("/api/v1/settings", settingsRouter);
+app.use("/api/v1/gallery", galleryRouter);
 app.use("/api/v1/users", usersRouter);
 app.use("/api/v1/rules", rulesRouter);
 

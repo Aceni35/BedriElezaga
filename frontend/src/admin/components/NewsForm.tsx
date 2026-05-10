@@ -9,6 +9,7 @@ import { Spinner } from '../../ui/Spinner';
 import { Select } from '../../ui/Select';
 import { DatePicker } from '../../ui/DatePicker';
 import { FileDropZone } from '../../ui/FileDropZone';
+import { TiptapEditor } from './TiptapEditor';
 import { newsFormSchema, type NewsFormValues } from '../schemas/news.schema';
 import {
   NEWS_CATEGORIES,
@@ -66,10 +67,17 @@ export function NewsForm(props: NewsFormProps) {
   const fNews = t.admin.forms.news;
   const aCommon = t.admin.common;
 
+  const initialEditorMode: 'paragraphs' | 'tiptap' = initial
+    ? initial.bodyHtml && initial.bodyHtml.trim().length > 0
+      ? 'tiptap'
+      : 'paragraphs'
+    : 'tiptap';
+
   const {
     register,
     control,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<NewsFormValues>({
     resolver: zodResolver(newsFormSchema) as Resolver<NewsFormValues>,
@@ -78,16 +86,21 @@ export function NewsForm(props: NewsFormProps) {
           title: initial.title,
           category: initial.category,
           publishedAt: initial.publishedAt,
+          editorMode: initialEditorMode,
           paragraphs: initial.body.length ? initial.body.map((text) => ({ text })) : [{ text: '' }],
+          bodyHtml: initial.bodyHtml ?? '',
         }
       : {
           title: '',
           category: 'Lajme',
           publishedAt: new Date().toISOString(),
+          editorMode: 'tiptap',
           paragraphs: [{ text: '' }],
+          bodyHtml: '',
         },
   });
 
+  const editorMode = watch('editorMode');
   const { fields, append, remove } = useFieldArray({ control, name: 'paragraphs' });
 
   const [coverFile, setCoverFile] = useState<File | null>(null);
@@ -192,15 +205,17 @@ export function NewsForm(props: NewsFormProps) {
 
       const cleanedBody = values.paragraphs.map((p) => p.text.trim()).filter(Boolean);
       const isoPublishedAt = new Date(values.publishedAt).toISOString();
+      const isTiptap = values.editorMode === 'tiptap';
+      const cleanedHtml = isTiptap ? values.bodyHtml.trim() : '';
 
       if (mode === 'create') {
         const payload: CreateNewsInput = {
           title: values.title.trim(),
-          body: cleanedBody,
           coverImageKey: coverKey as string,
           category: values.category,
           publishedAt: isoPublishedAt,
           attachments: allAttachments,
+          ...(isTiptap ? { bodyHtml: cleanedHtml } : { body: cleanedBody }),
         };
         const created = await createNews.mutateAsync(payload);
         if (onDone) onDone(created);
@@ -208,10 +223,12 @@ export function NewsForm(props: NewsFormProps) {
       } else {
         const payload: UpdateNewsInput = {
           title: values.title.trim(),
-          body: cleanedBody,
           category: values.category,
           publishedAt: isoPublishedAt,
           attachments: allAttachments,
+          ...(isTiptap
+            ? { bodyHtml: cleanedHtml, body: [] }
+            : { body: cleanedBody, bodyHtml: '' }),
         };
         if (coverKey) payload.coverImageKey = coverKey;
         const updated = await updateNews.mutateAsync({ id: initial!.id, input: payload });
@@ -307,36 +324,60 @@ export function NewsForm(props: NewsFormProps) {
       <div>
         <div className="flex items-center justify-between mb-1.5">
           <label className={labelClass + ' mb-0'}>{fNews.content}</label>
-          <button
-            type="button"
-            onClick={() => append({ text: '' })}
-            className="text-xs text-primary font-medium"
-          >
-            {fNews.addParagraph}
-          </button>
+          {editorMode === 'paragraphs' && (
+            <button
+              type="button"
+              onClick={() => append({ text: '' })}
+              className="text-xs text-primary font-medium"
+            >
+              {fNews.addParagraph}
+            </button>
+          )}
         </div>
-        <div className="space-y-3">
-          {fields.map((field, idx) => (
-            <div key={field.id} className="flex gap-2">
-              <textarea
-                {...register(`paragraphs.${idx}.text` as const)}
-                rows={3}
-                className={inputClass + ' resize-y'}
-                placeholder={interpolate(fNews.paragraphPlaceholder, { n: idx + 1 })}
+
+        {editorMode === 'tiptap' ? (
+          <Controller
+            control={control}
+            name="bodyHtml"
+            render={({ field }) => (
+              <TiptapEditor
+                value={field.value ?? ''}
+                onChange={field.onChange}
+                placeholder={interpolate(fNews.paragraphPlaceholder, { n: 1 })}
+                ariaLabel={fNews.content}
               />
-              {fields.length > 1 && (
-                <button
-                  type="button"
-                  onClick={() => remove(idx)}
-                  className="px-3 text-xs text-ink-soft hover:text-red-600"
-                >
-                  {aCommon.remove}
-                </button>
-              )}
-            </div>
-          ))}
-        </div>
-        {errors.paragraphs && (
+            )}
+          />
+        ) : (
+          <div className="space-y-3">
+            {fields.map((field, idx) => (
+              <div key={field.id} className="flex gap-2">
+                <textarea
+                  {...register(`paragraphs.${idx}.text` as const)}
+                  rows={3}
+                  className={inputClass + ' resize-y'}
+                  placeholder={interpolate(fNews.paragraphPlaceholder, { n: idx + 1 })}
+                />
+                {fields.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => remove(idx)}
+                    className="px-3 text-xs text-ink-soft hover:text-red-600"
+                  >
+                    {aCommon.remove}
+                  </button>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {editorMode === 'tiptap' && errors.bodyHtml && (
+          <div className="mt-1 text-xs text-red-600">
+            {tError(t, errors.bodyHtml.message)}
+          </div>
+        )}
+        {editorMode === 'paragraphs' && errors.paragraphs && (
           <div className="mt-1 text-xs text-red-600">
             {tError(t, (errors.paragraphs.root?.message ?? errors.paragraphs.message) as string)}
           </div>

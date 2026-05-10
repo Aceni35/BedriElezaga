@@ -12,8 +12,11 @@ import { useI18n, interpolate } from '../i18n/I18nContext';
 
 const PAGE_SIZE = 7;
 
-const buildExcerpt = (body, max = 180) => {
-  const first = Array.isArray(body) ? (body[0] ?? '') : '';
+const stripHtml = (html) => (html || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+
+const buildExcerpt = (item, max = 180) => {
+  const fromHtml = stripHtml(item?.bodyHtml);
+  const first = fromHtml || (Array.isArray(item?.body) ? (item.body[0] ?? '') : '');
   return first.length > max ? first.slice(0, max).trimEnd() + '…' : first;
 };
 
@@ -162,7 +165,7 @@ function News() {
                         </h3>
 
                         <p className={'text-ink-soft leading-relaxed mb-5 flex-1 m-0 line-clamp-3 ' + (isHero ? 'text-[15px]' : 'text-sm')}>
-                          {buildExcerpt(item.body, isHero ? 240 : 160)}
+                          {buildExcerpt(item, isHero ? 240 : 160)}
                         </p>
 
                         <div className="flex items-center justify-between gap-3 pt-4 border-t border-line mt-auto">

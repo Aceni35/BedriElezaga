@@ -269,6 +269,7 @@ export interface Dict {
     address: string;
     menuTitle: string;
     hoursTitle: string;
+    hoursDays: string;
     hours: { d: string; h: string }[];
     rights: string;
     menu: {
@@ -305,6 +306,7 @@ export interface Dict {
       staff: string;
       documents: string;
       rules: string;
+      gallery: string;
       settings: string;
       users: string;
     };
@@ -452,6 +454,27 @@ export interface Dict {
       newPassword: string;
       confirmPassword: string;
       changeBtn: string;
+    };
+
+    gallery: {
+      title: string;
+      subtitle: string;
+      empty: string;
+      uploadImage: string;
+      replaceImage: string;
+      imageHint: string;
+      onlyAllowedImages: string;
+      sectionStaffTitle: string;
+      sectionAboutTitle: string;
+      sectionStudentsTitle: string;
+      sectionHomeTitle: string;
+      aboutHistory: string;
+      aboutMission: string;
+      studentsOrari: string;
+      studentsRregullorja: string;
+      homeImage1: string;
+      homeImage2: string;
+      homeImage3: string;
     };
 
     forms: {
@@ -888,8 +911,13 @@ const sq: Dict = {
       { name: "Rexhep Kokaj", period: "1977–1981" },
       { name: "Idriz Kallaboviq", period: "1981" },
       { name: "Rexhep Lleshi", period: "1985–1998" },
-      { name: "Nail Draga", period: "1998–2003" },
-      { name: "Ali Muçaj", period: "2003 — sot" },
+      { name: "Nail Draga", period: "1998–2002" },
+      { name: "Ali Muçaj", period: "2002–2007" },
+      { name: "Nail Draga", period: "2007–2011" },
+      { name: "Qamal Bajri", period: "2011" },
+      { name: "Alim Jahja", period: "2011–2016" },
+      { name: "Arsimi Cuca", period: "2016–2020" },
+      { name: "Mustaf Bardhi", period: "2021 — sot" },
     ],
     addendumParagraphs: [
       "Në Kronikën e Shkollës dhe Ekstraktin e saj, figuron se me mbarimin e Luftës së Parë Botërore, 1918, kjo trevë bie nën sundimin e Mbretërisë Jugosllave dhe shkollat e para në Anë të Malit janë hapur, më 1929, në Selitë, Kosiq dhe Sukubinë. Të njëjtat kanë punuar deri në fillimin e Luftës së Dytë Botërore dhe kapitullimin e atij shteti, më 1941.",
@@ -1129,10 +1157,11 @@ const sq: Dict = {
     address: "85366 Katërkollë - Ulqin",
     menuTitle: "Menu",
     hoursTitle: "Orari",
+    hoursDays: "E hënë – E premte",
     hours: [
-      { d: "E hënë – E premte", h: "07:45 – 15:30" },
-      { d: "E shtunë", h: "Mbyllur" },
-      { d: "E diel", h: "Mbyllur" },
+      { d: "Higjena", h: "07:00 – 19:00" },
+      { d: "Me nxënës", h: "08:00 – 17:25" },
+      { d: "Administrata", h: "08:00 – 15:00" },
     ],
     rights:
       '© 2026 Shkolla Fillore "Bedri Elezaga". Të gjitha të drejtat e rezervuara.',
@@ -1168,6 +1197,7 @@ const sq: Dict = {
       staff: "Stafi",
       documents: "Dokumentet",
       rules: "Rregullorja",
+      gallery: "Galeria",
       settings: "Cilësimet",
       users: "Përdoruesit",
     },
@@ -1308,6 +1338,26 @@ const sq: Dict = {
       newPassword: "Fjalëkalimi i ri",
       confirmPassword: "Konfirmo fjalëkalimin",
       changeBtn: "Ndrysho fjalëkalimin",
+    },
+    gallery: {
+      title: "Galeria",
+      subtitle: "Ngarko imazhe që shfaqen në krye të faqeve të stafit dhe rreth nesh sipas kategorisë së zgjedhur.",
+      empty: "Pa imazh.",
+      uploadImage: "Kliko ose tërhiq",
+      replaceImage: "Zëvendëso",
+      imageHint: "JPG, PNG, WEBP, AVIF — max 10 MB",
+      onlyAllowedImages: "Vetëm imazhe",
+      sectionStaffTitle: "Stafi",
+      sectionAboutTitle: "Rreth nesh",
+      sectionStudentsTitle: "Nxënësit",
+      sectionHomeTitle: "Faqja kryesore",
+      aboutHistory: "Historia",
+      aboutMission: "Misioni",
+      studentsOrari: "Orari",
+      studentsRregullorja: "Rregullorja",
+      homeImage1: "Imazhi 1 (oborri)",
+      homeImage2: "Imazhi 2 (klasa)",
+      homeImage3: "Imazhi 3 (intro)",
     },
     forms: {
       news: {
@@ -1743,8 +1793,13 @@ const en: Dict = {
       { name: "Rexhep Kokaj", period: "1977–1981" },
       { name: "Idriz Kallaboviq", period: "1981" },
       { name: "Rexhep Lleshi", period: "1985–1998" },
-      { name: "Nail Draga", period: "1998–2003" },
-      { name: "Ali Muçaj", period: "2003 — present" },
+      { name: "Nail Draga", period: "1998–2002" },
+      { name: "Ali Muçaj", period: "2002–2007" },
+      { name: "Nail Draga", period: "2007–2011" },
+      { name: "Qamal Bajri", period: "2011" },
+      { name: "Alim Jahja", period: "2011–2016" },
+      { name: "Arsimi Cuca", period: "2016–2020" },
+      { name: "Mustaf Bardhi", period: "2021 — present" },
     ],
     addendumParagraphs: [
       "In the School Chronicle and its Excerpt, it is recorded that with the end of the First World War in 1918, this region falls under the rule of the Yugoslav Kingdom, and the first schools in Ana e Malit were opened in 1929 in Selitë, Kosiq and Sukubinë. They operated until the start of the Second World War and the capitulation of that state in 1941.",
@@ -1980,10 +2035,11 @@ const en: Dict = {
     address: "85366 Katërkollë - Ulqin",
     menuTitle: "Menu",
     hoursTitle: "Hours",
+    hoursDays: "Monday – Friday",
     hours: [
-      { d: "Monday – Friday", h: "07:45 – 15:30" },
-      { d: "Saturday", h: "Closed" },
-      { d: "Sunday", h: "Closed" },
+      { d: "Cleaning", h: "07:00 – 19:00" },
+      { d: "Classes", h: "08:00 – 17:25" },
+      { d: "Administration", h: "08:00 – 15:00" },
     ],
     rights: '© 2026 Primary School "Bedri Elezaga". All rights reserved.',
     menu: {
@@ -2018,6 +2074,7 @@ const en: Dict = {
       staff: "Staff",
       documents: "Documents",
       rules: "Regulations",
+      gallery: "Gallery",
       settings: "Settings",
       users: "Users",
     },
@@ -2158,6 +2215,26 @@ const en: Dict = {
       newPassword: "New password",
       confirmPassword: "Confirm password",
       changeBtn: "Change password",
+    },
+    gallery: {
+      title: "Gallery",
+      subtitle: "Upload images shown at the top of the Staff and About pages depending on the selected category.",
+      empty: "No image.",
+      uploadImage: "Click or drop",
+      replaceImage: "Replace",
+      imageHint: "JPG, PNG, WEBP, AVIF — max 10 MB",
+      onlyAllowedImages: "Images only",
+      sectionStaffTitle: "Staff",
+      sectionAboutTitle: "About",
+      sectionStudentsTitle: "Students",
+      sectionHomeTitle: "Home page",
+      aboutHistory: "History",
+      aboutMission: "Mission",
+      studentsOrari: "Schedule",
+      studentsRregullorja: "Regulations",
+      homeImage1: "Image 1 (yard)",
+      homeImage2: "Image 2 (class)",
+      homeImage3: "Image 3 (intro)",
     },
     forms: {
       news: {
@@ -2592,8 +2669,13 @@ const me: Dict = {
       { name: "Rexhep Kokaj", period: "1977–1981." },
       { name: "Idriz Kallaboviq", period: "1981." },
       { name: "Rexhep Lleshi", period: "1985–1998." },
-      { name: "Nail Draga", period: "1998–2003." },
-      { name: "Ali Muçaj", period: "2003. — danas" },
+      { name: "Nail Draga", period: "1998–2002." },
+      { name: "Ali Muçaj", period: "2002–2007." },
+      { name: "Nail Draga", period: "2007–2011." },
+      { name: "Qamal Bajri", period: "2011." },
+      { name: "Alim Jahja", period: "2011–2016." },
+      { name: "Arsimi Cuca", period: "2016–2020." },
+      { name: "Mustaf Bardhi", period: "2021. — danas" },
     ],
     addendumParagraphs: [
       "U Hronici škole i njenom Izvodu navodi se da je završetkom Prvog svjetskog rata 1918. godine ovaj kraj potpao pod vlast Kraljevine Jugoslavije i da su prve škole u Ani e Malitu otvorene 1929. u Selitu, Kosiqu i Sukubinu. Iste su radile do početka Drugog svjetskog rata i kapitulacije te države 1941.",
@@ -2825,10 +2907,11 @@ const me: Dict = {
     address: "85366 Katërkollë - Ulcinj",
     menuTitle: "Meni",
     hoursTitle: "Radno vrijeme",
+    hoursDays: "Ponedjeljak – Petak",
     hours: [
-      { d: "Ponedjeljak – Petak", h: "07:45 – 15:30" },
-      { d: "Subota", h: "Zatvoreno" },
-      { d: "Nedjelja", h: "Zatvoreno" },
+      { d: "Higijena", h: "07:00 – 19:00" },
+      { d: "Nastava", h: "08:00 – 17:25" },
+      { d: "Administracija", h: "08:00 – 15:00" },
     ],
     rights: '© 2026. Osnovna škola "Bedri Elezaga". Sva prava zadržana.',
     menu: {
@@ -2863,6 +2946,7 @@ const me: Dict = {
       staff: "Osoblje",
       documents: "Dokumenti",
       rules: "Pravilnik",
+      gallery: "Galerija",
       settings: "Podešavanja",
       users: "Korisnici",
     },
@@ -3003,6 +3087,26 @@ const me: Dict = {
       newPassword: "Nova lozinka",
       confirmPassword: "Potvrdi lozinku",
       changeBtn: "Promijeni lozinku",
+    },
+    gallery: {
+      title: "Galerija",
+      subtitle: "Otpremite slike koje se prikazuju na vrhu stranica Osoblje i O nama u zavisnosti od odabrane kategorije.",
+      empty: "Bez slike.",
+      uploadImage: "Kliknite ili prevucite",
+      replaceImage: "Zamijeni",
+      imageHint: "JPG, PNG, WEBP, AVIF — max 10 MB",
+      onlyAllowedImages: "Samo slike",
+      sectionStaffTitle: "Osoblje",
+      sectionAboutTitle: "O nama",
+      sectionStudentsTitle: "Učenici",
+      sectionHomeTitle: "Početna",
+      aboutHistory: "Istorija",
+      aboutMission: "Misija",
+      studentsOrari: "Raspored",
+      studentsRregullorja: "Pravilnik",
+      homeImage1: "Slika 1 (dvorište)",
+      homeImage2: "Slika 2 (učionica)",
+      homeImage3: "Slika 3 (intro)",
     },
     forms: {
       news: {

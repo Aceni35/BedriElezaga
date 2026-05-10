@@ -8,14 +8,18 @@ import ImageFit from './ImageFit.jsx';
 import { Spinner } from '../ui/Spinner';
 import { useNewsList } from '../hooks/useNews';
 import { useSettings } from '../hooks/useSettings';
+import { useGallery } from '../hooks/useGallery';
 import { useI18n } from '../i18n/I18nContext';
 
 const getSchoolYear = (now = new Date()) => {
   const start = now.getMonth() >= 8 ? now.getFullYear() : now.getFullYear() - 1;
   return `${start} – ${start + 1}`;
 };
-const buildExcerpt = (body, max = 180) => {
-  const first = Array.isArray(body) ? (body[0] ?? '') : '';
+const stripHtml = (html) => (html || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
+
+const buildExcerpt = (item, max = 180) => {
+  const fromHtml = stripHtml(item?.bodyHtml);
+  const first = fromHtml || (Array.isArray(item?.body) ? (item.body[0] ?? '') : '');
   return first.length > max ? first.slice(0, max).trimEnd() + '…' : first;
 };
 
@@ -25,9 +29,17 @@ function Home() {
   const { data: newsData, isLoading: newsLoading } = useNewsList({ limit: 5, sort: '-publishedAt' });
   const { data: settings } = useSettings();
   const directorName = settings?.directorName?.trim() || '';
-  const homeImage1 = settings?.homeImage1?.url || null;
-  const homeImage2 = settings?.homeImage2?.url || null;
-  const homeImage3 = settings?.homeImage3?.url || null;
+  const { data: galleryData } = useGallery();
+  const homeImagesByCategory = React.useMemo(() => {
+    const map = {};
+    for (const item of galleryData?.items ?? []) {
+      if (item.section === 'home') map[item.category] = item.picture.url;
+    }
+    return map;
+  }, [galleryData]);
+  const homeImage1 = homeImagesByCategory.image1 || null;
+  const homeImage2 = homeImagesByCategory.image2 || null;
+  const homeImage3 = homeImagesByCategory.image3 || null;
   const newsItems = newsData?.items ?? [];
   const lead = newsItems.slice(0, 1);
   const others = newsItems.slice(1, 5);
@@ -177,7 +189,7 @@ function Home() {
                   <div className="p-8">
                     <div className="text-[13px] text-ink-soft flex items-center gap-2 mb-3.5"><Icon path={ICONS.calendar} size={13} /> {formatDate(n.publishedAt)}</div>
                     <h3 className="text-[28px] font-medium mb-3.5 leading-tight text-balance">{n.title}</h3>
-                    <p className="text-ink-soft leading-relaxed mb-5">{buildExcerpt(n.body)}</p>
+                    <p className="text-ink-soft leading-relaxed mb-5">{buildExcerpt(n)}</p>
                     <div className={CX.btnLink}>{t.common.readMore} <Icon path={ICONS.arrowRight} size={14} className="arrow-slide" /></div>
                   </div>
                 </article>

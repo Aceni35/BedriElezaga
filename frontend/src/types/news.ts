@@ -27,6 +27,7 @@ export interface News {
   id: string;
   title: string;
   body: string[];
+  bodyHtml: string;
   coverImage: NewsCoverImage;
   category: NewsCategory;
   author: NewsAuthor;
@@ -38,7 +39,8 @@ export interface News {
 
 export interface CreateNewsInput {
   title: string;
-  body: string[];
+  body?: string[];
+  bodyHtml?: string;
   coverImageKey: string;
   category: NewsCategory;
   publishedAt?: string;

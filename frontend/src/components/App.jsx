@@ -21,6 +21,7 @@ import { NewsListPage } from '../admin/NewsListPage';
 import { StaffListPage } from '../admin/StaffListPage';
 import { DocumentsListPage } from '../admin/DocumentsListPage';
 import { SettingsPage } from '../admin/SettingsPage';
+import { GalleryPage } from '../admin/GalleryPage';
 import { UsersListPage } from '../admin/UsersListPage';
 import { RulesListPage } from '../admin/RulesListPage';
 
@@ -87,6 +88,7 @@ function App() {
             <Route path="staff" element={<StaffListPage />} />
             <Route path="documents" element={<DocumentsListPage />} />
             <Route path="rules" element={<RulesListPage />} />
+            <Route path="gallery" element={<GalleryPage />} />
             <Route path="settings" element={<SettingsPage />} />
             <Route element={<AdminRoute />}>
               <Route path="users" element={<UsersListPage />} />

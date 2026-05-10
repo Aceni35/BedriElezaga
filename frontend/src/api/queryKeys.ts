@@ -31,6 +31,9 @@ export const queryKeys = {
   settings: {
     all: ['settings'] as const,
   },
+  gallery: {
+    all: ['gallery'] as const,
+  },
   rules: {
     all: ['rules'] as const,
     lists: () => [...queryKeys.rules.all, 'list'] as const,

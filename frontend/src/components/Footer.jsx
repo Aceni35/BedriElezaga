@@ -3,7 +3,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CX, ICONS } from './constants.jsx';
 import Icon from './Icon.jsx';
-import Crest from './Crest.jsx';
 import LanguageSwitcher from './LanguageSwitcher.jsx';
 import { useI18n } from '../i18n/I18nContext';
 
@@ -29,7 +28,11 @@ function Footer() {
       <div className={CX.container}>
         <div className="grid md:grid-cols-[1fr_1.6fr] gap-16 mb-14">
           <div className="flex gap-4 items-start max-w-sm">
-            <Crest size={44} />
+            <img
+              src="https://pub-a1b19793d15448139486af8924561c8b.r2.dev/logo-bedri-2.png"
+              alt={t.common.schoolShortName}
+              className="h-11 w-11 object-contain shrink-0"
+            />
             <div>
               <div className="font-display text-[22px] font-medium text-white mb-2 leading-tight">{t.common.schoolFullName}</div>
               <div className="text-sm leading-relaxed opacity-80">{f.schoolDescription}</div>
@@ -56,7 +59,8 @@ function Footer() {
             </div>
 
             <div>
-              <div className="font-display text-sm font-medium text-white mb-5">{f.hoursTitle}</div>
+              <div className="font-display text-sm font-medium text-white mb-2">{f.hoursTitle}</div>
+              <div className="text-[13px] text-white/90 mb-3">{f.hoursDays}</div>
               <div className="text-[13px] mb-6">
                 {f.hours.map((row, i) => (
                   <div key={i} className="flex justify-between py-1.5 border-b border-white/10 opacity-85"><span>{row.d}</span><span>{row.h}</span></div>

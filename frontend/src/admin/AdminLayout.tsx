@@ -16,6 +16,7 @@ export function AdminLayout() {
     { to: '/admin/staff',     label: t.admin.nav.staff,                 adminOnly: false },
     { to: '/admin/documents', label: t.admin.nav.documents,             adminOnly: false },
     { to: '/admin/rules',     label: t.admin.nav.rules,                 adminOnly: false },
+    { to: '/admin/gallery',   label: t.admin.nav.gallery,               adminOnly: false },
     { to: '/admin/settings',  label: t.admin.nav.settings,              adminOnly: false },
     { to: '/admin/users',     label: t.admin.nav.users,                 adminOnly: true  },
   ];

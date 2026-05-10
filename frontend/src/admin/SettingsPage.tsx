@@ -20,26 +20,10 @@ const ALLOWED_DOC_TYPES = new Set([
 
 const ALLOWED_DOC_EXTENSIONS = new Set(['pdf', 'doc', 'docx']);
 
-const ALLOWED_IMAGE_TYPES = new Set([
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-  'image/avif',
-  'image/gif',
-]);
-
-const ALLOWED_IMAGE_EXTENSIONS = new Set(['jpg', 'jpeg', 'png', 'webp', 'avif', 'gif']);
-
 const MIME_BY_EXT: Record<string, string> = {
   pdf: 'application/pdf',
   doc: 'application/msword',
   docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-  jpg: 'image/jpeg',
-  jpeg: 'image/jpeg',
-  png: 'image/png',
-  webp: 'image/webp',
-  avif: 'image/avif',
-  gif: 'image/gif',
 };
 
 function getExtension(name: string): string {
@@ -74,9 +58,6 @@ export function SettingsPage() {
   const [directorName, setDirectorName] = useState('');
   const [timetable, setTimetable] = useState<SlotState>({ kind: 'unchanged' });
   const [rules, setRules] = useState<SlotState>({ kind: 'unchanged' });
-  const [homeImage1, setHomeImage1] = useState<SlotState>({ kind: 'unchanged' });
-  const [homeImage2, setHomeImage2] = useState<SlotState>({ kind: 'unchanged' });
-  const [homeImage3, setHomeImage3] = useState<SlotState>({ kind: 'unchanged' });
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
@@ -107,20 +88,6 @@ export function SettingsPage() {
         input.rulesKey = '';
       }
 
-      const imageSlots: Array<[SlotState, 'homeImage1Key' | 'homeImage2Key' | 'homeImage3Key']> = [
-        [homeImage1, 'homeImage1Key'],
-        [homeImage2, 'homeImage2Key'],
-        [homeImage3, 'homeImage3Key'],
-      ];
-      for (const [slot, field] of imageSlots) {
-        if (slot.kind === 'replace') {
-          const uploaded = await uploadsService.uploadFile(slot.file);
-          input[field] = uploaded.key;
-        } else if (slot.kind === 'remove') {
-          input[field] = '';
-        }
-      }
-
       if (Object.keys(input).length === 0) {
         setSubmitting(false);
         return;
@@ -129,9 +96,6 @@ export function SettingsPage() {
       await updateSettings.mutateAsync(input);
       setTimetable({ kind: 'unchanged' });
       setRules({ kind: 'unchanged' });
-      setHomeImage1({ kind: 'unchanged' });
-      setHomeImage2({ kind: 'unchanged' });
-      setHomeImage3({ kind: 'unchanged' });
     } catch (err) {
       setSubmitError(getApiErrorMessage(err));
     } finally {
@@ -197,32 +161,6 @@ export function SettingsPage() {
             </div>
           </section>
 
-          <section>
-            <h2 className="font-display text-base font-semibold mb-4">{s.homeImagesHeading}</h2>
-            <div className="space-y-6">
-              <ImageSlot
-                label={s.homeImage1Label}
-                hint={s.imageHint}
-                current={data.homeImage1}
-                state={homeImage1}
-                onChange={setHomeImage1}
-              />
-              <ImageSlot
-                label={s.homeImage2Label}
-                hint={s.imageHint}
-                current={data.homeImage2}
-                state={homeImage2}
-                onChange={setHomeImage2}
-              />
-              <ImageSlot
-                label={s.homeImage3Label}
-                hint={s.imageHint}
-                current={data.homeImage3}
-                state={homeImage3}
-                onChange={setHomeImage3}
-              />
-            </div>
-          </section>
 
           {submitError && (
             <div className="px-3 py-2 text-sm rounded-lg bg-red-50 text-red-700 border border-red-200">
@@ -352,117 +290,6 @@ function FileSlot({ label, hint, current, state, onChange }: FileSlotProps) {
         onFiles={handleFiles}
         icon={<UploadIcon />}
         title={current || state.kind === 'replace' ? s.replaceFile : s.uploadFile}
-        hint={hint}
-      />
-
-      {error && <div className="mt-1 text-xs text-red-600">{error}</div>}
-    </div>
-  );
-}
-
-function ImageSlot({ label, hint, current, state, onChange }: FileSlotProps) {
-  const { t } = useI18n();
-  const s = t.admin.settings;
-  const [error, setError] = useState<string | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (state.kind !== 'replace') {
-      setPreviewUrl(null);
-      return;
-    }
-    const url = URL.createObjectURL(state.file);
-    setPreviewUrl(url);
-    return () => URL.revokeObjectURL(url);
-  }, [state]);
-
-  const handleFiles = (files: File[]) => {
-    const raw = files[0];
-    if (!raw) return;
-    const f = normalizeFile(raw, ALLOWED_IMAGE_EXTENSIONS);
-    const ext = getExtension(f.name);
-    if (!ALLOWED_IMAGE_TYPES.has(f.type) && !ALLOWED_IMAGE_EXTENSIONS.has(ext)) {
-      setError(s.onlyAllowedImages);
-      return;
-    }
-    setError(null);
-    onChange({ kind: 'replace', file: f });
-  };
-
-  const showCurrent = state.kind !== 'remove' && state.kind !== 'replace' && current;
-  const showPending = state.kind === 'replace';
-
-  return (
-    <div>
-      <label className={labelClass}>{label}</label>
-
-      {showCurrent && current && (
-        <div className="flex items-center gap-4 p-3 rounded-xl bg-surface border border-line mb-3">
-          <img
-            src={current.url}
-            alt=""
-            className="w-16 h-16 rounded-lg object-cover bg-bg shrink-0"
-          />
-          <div className="flex-1 min-w-0">
-            <a
-              href={current.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-sm font-medium truncate hover:text-primary block"
-            >
-              {fileLabelOf(current.key)}
-            </a>
-            <div className="text-xs text-ink-soft mt-0.5">{s.currentFile}</div>
-          </div>
-          <button
-            type="button"
-            onClick={() => onChange({ kind: 'remove' })}
-            className="text-xs text-ink-soft hover:text-red-600 shrink-0"
-          >
-            {t.admin.common.remove}
-          </button>
-        </div>
-      )}
-
-      {showPending && state.kind === 'replace' && (
-        <div className="flex items-center gap-4 p-3 rounded-xl bg-surface border border-line mb-3">
-          {previewUrl && (
-            <img src={previewUrl} alt="" className="w-16 h-16 rounded-lg object-cover bg-bg shrink-0" />
-          )}
-          <div className="flex-1 min-w-0">
-            <div className="text-sm font-medium truncate">{state.file.name}</div>
-            <div className="text-xs text-ink-soft mt-0.5">
-              {interpolate(s.pendingUpload, { size: formatBytes(state.file.size) })}
-            </div>
-          </div>
-          <button
-            type="button"
-            onClick={() => onChange(current ? { kind: 'unchanged' } : { kind: 'remove' })}
-            className="text-xs text-ink-soft hover:text-red-600 shrink-0"
-          >
-            {t.admin.common.remove}
-          </button>
-        </div>
-      )}
-
-      {state.kind === 'remove' && (
-        <div className="flex items-center justify-between gap-4 p-3 rounded-xl bg-red-50 border border-red-200 mb-3">
-          <div className="text-xs text-red-700">{s.willBeRemoved}</div>
-          <button
-            type="button"
-            onClick={() => onChange({ kind: 'unchanged' })}
-            className="text-xs text-ink-soft hover:text-ink shrink-0"
-          >
-            {t.admin.common.cancel}
-          </button>
-        </div>
-      )}
-
-      <FileDropZone
-        accept="image/*"
-        onFiles={handleFiles}
-        icon={<UploadIcon />}
-        title={current || state.kind === 'replace' ? s.replaceImage : s.uploadImage}
         hint={hint}
       />
 

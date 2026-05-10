@@ -2,6 +2,7 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'sonner';
+import DOMPurify from 'dompurify';
 import { CX, ICONS } from './constants.jsx';
 import Icon from './Icon.jsx';
 import PH from './PH.jsx';
@@ -33,9 +34,13 @@ const initialsOf = (name) =>
     .map((w) => w[0]?.toUpperCase() ?? '')
     .join('');
 
-const readingMinutes = (body) => {
-  const text = Array.isArray(body) ? body.join(' ') : '';
-  const words = text.trim().split(/\s+/).filter(Boolean).length;
+const stripHtml = (html) => (html || '').replace(/<[^>]*>/g, ' ');
+
+const readingMinutes = (body, bodyHtml) => {
+  const fromHtml = bodyHtml ? stripHtml(bodyHtml) : '';
+  const fromParagraphs = Array.isArray(body) ? body.join(' ') : '';
+  const text = (fromHtml + ' ' + fromParagraphs).trim();
+  const words = text.split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.round(words / 200));
 };
 
@@ -196,12 +201,14 @@ function Article() {
 
   const related = (relatedData?.items ?? []).filter((nn) => nn.id !== article.id).slice(0, 3);
   const bodyParagraphs = (article.body ?? []).filter((p) => p && p.trim().length > 0);
+  const hasHtmlBody = !!(article.bodyHtml && article.bodyHtml.trim().length > 0);
+  const sanitizedHtml = hasHtmlBody ? DOMPurify.sanitize(article.bodyHtml) : '';
   const attachments = article.attachments ?? [];
   const imageAttachments = attachments.filter((x) => x.kind === 'image');
   const videoAttachments = attachments.filter((x) => x.kind === 'video');
   const documentAttachments = attachments.filter((x) => x.kind === 'document');
   const authorName = article.author?.fullName || a.editorFallbackName;
-  const minutes = readingMinutes(article.body);
+  const minutes = readingMinutes(article.body, article.bodyHtml);
 
   const lightboxSlides = [
     ...imageAttachments.map((x) => ({ type: 'image', src: x.url })),
@@ -296,18 +303,25 @@ function Article() {
       <section className="pt-14">
         <div className={CX.container}>
           <article className="max-w-[720px] mx-auto">
-            {bodyParagraphs.map((p, i) =>
-              i === 0 ? (
-                <p
-                  key={i}
-                  className="text-[19px] leading-[1.8] text-ink mb-6 first-letter:font-display first-letter:font-semibold first-letter:text-primary first-letter:text-[72px] first-letter:leading-[0.85] first-letter:float-left first-letter:mr-3 first-letter:mt-1.5"
-                >
-                  {p}
-                </p>
-              ) : (
-                <p key={i} className="text-[17px] leading-[1.85] text-ink-soft mb-5">
-                  {p}
-                </p>
+            {hasHtmlBody ? (
+              <div
+                className="prose-article"
+                dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
+              />
+            ) : (
+              bodyParagraphs.map((p, i) =>
+                i === 0 ? (
+                  <p
+                    key={i}
+                    className="text-[19px] leading-[1.8] text-ink mb-6 first-letter:font-display first-letter:font-semibold first-letter:text-primary first-letter:text-[72px] first-letter:leading-[0.85] first-letter:float-left first-letter:mr-3 first-letter:mt-1.5"
+                  >
+                    {p}
+                  </p>
+                ) : (
+                  <p key={i} className="text-[17px] leading-[1.85] text-ink-soft mb-5">
+                    {p}
+                  </p>
+                )
               )
             )}
           </article>

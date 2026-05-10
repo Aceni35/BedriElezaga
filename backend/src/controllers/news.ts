@@ -16,7 +16,8 @@ function toResponse(doc: NewsDoc) {
   return {
     id: doc._id,
     title: doc.title,
-    body: doc.body,
+    body: doc.body ?? [],
+    bodyHtml: doc.bodyHtml ?? "",
     coverImage: { key: doc.coverImageKey, url: publicUrlFor(doc.coverImageKey) },
     category: doc.category,
     author: doc.author,
@@ -56,7 +57,7 @@ export const listNews: RequestHandler = async (req, res) => {
   if (category) filter.category = category;
   if (search) {
     const rx = new RegExp(search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i");
-    filter.$or = [{ title: rx }, { body: rx }];
+    filter.$or = [{ title: rx }, { body: rx }, { bodyHtml: rx }];
   }
 
   const [items, total] = await Promise.all([
@@ -98,7 +99,8 @@ export const createNews: RequestHandler = async (req, res) => {
   const data = parsed.data;
   const doc = await News.create({
     title: data.title,
-    body: data.body,
+    body: data.body ?? [],
+    bodyHtml: data.bodyHtml ?? "",
     coverImageKey: data.coverImageKey,
     category: data.category,
     author: { id: user._id, fullName: `${user.firstName} ${user.lastName}`.trim() },
@@ -138,6 +140,7 @@ export const updateNews: RequestHandler = async (req, res) => {
 
   if (data.title !== undefined) doc.title = data.title;
   if (data.body !== undefined) doc.body = data.body;
+  if (data.bodyHtml !== undefined) doc.bodyHtml = data.bodyHtml;
   if (data.category !== undefined) doc.category = data.category;
   if (data.publishedAt !== undefined) doc.publishedAt = data.publishedAt;
 
