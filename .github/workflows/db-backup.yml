@@ -1,0 +1,31 @@
+name: Database backup
+
+on:
+  schedule:
+    - cron: "0 3 * * *" # every day at 03:00 UTC
+  workflow_dispatch: # allows running it manually from the Actions tab
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump MongoDB
+        env:
+          MONGO_URI: ${{ secrets.MONGO_URI }}
+        run: |
+          FILE=backup-$(date -u +%Y-%m-%d).gz
+          docker run --rm -v "$PWD:/backup" mongo:8 \
+            mongodump --uri="$MONGO_URI" --archive="/backup/$FILE" --gzip
+          ls -lh "$FILE"
+          echo "FILE=$FILE" >> "$GITHUB_ENV"
+
+      - name: Upload to R2
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: auto
+          AWS_REQUEST_CHECKSUM_CALCULATION: when_required
+          AWS_RESPONSE_CHECKSUM_VALIDATION: when_required
+        run: |
+          aws s3 cp "$FILE" "s3://${{ secrets.R2_BACKUP_BUCKET }}/db-backups/$FILE" \
+            --endpoint-url "https://${{ secrets.R2_ACCOUNT_ID }}.r2.cloudflarestorage.com"
