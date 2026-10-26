@@ -14,7 +14,7 @@ jobs:
           MONGO_URI: ${{ secrets.MONGO_URI }}
         run: |
           FILE=backup-$(date -u +%Y-%m-%d).gz
-          docker run --rm -v "$PWD:/backup" mongo:8 \
+          docker run --rm --user "$(id -u):$(id -g)" -v "$PWD:/backup" mongo:8 \
             mongodump --uri="$MONGO_URI" --archive="/backup/$FILE" --gzip
           ls -lh "$FILE"
           echo "FILE=$FILE" >> "$GITHUB_ENV"
